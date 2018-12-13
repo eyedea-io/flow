@@ -20,7 +20,7 @@ plugins:
 export POSTMAN_API_KEY=<api key>
 export POSTMAN_COLLECTION_ID=<collection id>
 ```
-> You can find collection ID in the Postman URL - when you will onpen collection docs)
+> You can find collection ID in the Postman URL - when you will open collection docs)
 
 5) Run it:
 ```bash
