@@ -79,10 +79,14 @@ workflows:
     jobs:
       - build
       - deploy_staging:
+          requires:
+            - build
           filters:
             branches:
               only: master
       - deploy:
+          requires:
+            - build
           filters:
             branches:
               only: /\d/
