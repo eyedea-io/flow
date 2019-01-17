@@ -1,0 +1,4 @@
+endpoints:
+  login:
+    name: login
+    socket: auth

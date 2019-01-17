@@ -1,0 +1,81 @@
+name: winvest
+
+components:
+  input:
+    name: Input
+    
+  button:
+    name: Button
+
+endpoints:
+  login:
+    $ref: "src/schema/sockets.yml#/endpoints/login"
+  register:
+    name: register
+    socket: auth
+
+views:
+  Login: 
+    name: Login
+    extend: Auth
+    components:
+      - $ref: '#/components/input'
+      - $ref: '#/components/button'
+    endpoints:
+      - $ref: '#/endpoints/login'
+      - $ref: '#/endpoints/register'
+
+stories:
+  User can login:
+    name: User can login
+    views: 
+      - $ref: '#/views/Login'
+  User can register:
+    name: User can register
+    views: 
+      - $ref: '#/views/Login'
+
+flows:
+  - name: User can see his own profile
+    stories:
+    - name: User can register
+      $ref: '#/stories/User can register'
+    - name: User can login
+      $ref: '#/stories/User can login'
+    - name: User can view profile
+      views: 
+        - name: Profile View
+          extend: Default
+
+  - name: User can create startup profile
+    stories:
+      - name: User can register
+        $ref: '#/stories/User can register'
+      - name: User can login
+        $ref: '#/stories/User can login'
+      - name: User can add Startup
+        views: 
+          - name: NewStartup
+            extend: Default
+            components:
+              - name: DescriptionField
+      - name: User can see created startup on the list of startups
+        views:
+          - name: Dashboard
+            extend: Default
+      - name: User can see created startup in the user naviagion
+        views:
+          - name: Default
+
+  - name: User can create investment company
+    stories:
+      - name: User can login
+        $ref: '#/stories/User can login'
+      - name: User can add Company
+        views: 
+          - name: NewCompany
+            extend: Default
+      - name: User can see created company in the user naviagion
+        views:
+          - name: Default
+            extend: Default

@@ -1,0 +1,1 @@
+{"version":"0.0.2","commands":{"list":{"id":"list","description":"List all objects","pluginName":"@eyedea/project-schema","pluginType":"core","aliases":[],"flags":{},"args":[]}}}
