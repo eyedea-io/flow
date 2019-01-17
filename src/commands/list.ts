@@ -23,8 +23,8 @@ export default class List extends Command {
   async run() {
     const { args, flags } = this.parse(List)
 
-    const projectSchema = path.join(process.cwd(), "./schema/flows.yml")
-    const endpointSchema = path.join(process.cwd(), "./schema/endpoints.yml")
+    const projectSchema = require(path.join(process.cwd(), "./schema/flows.js"))
+    const endpointSchema = require(path.join(process.cwd(), "./schema/endpoints.js"))
     // const storiesSchema = path.join(process.cwd(), "./schema/stories.yml")
     // const componentsSchema = path.join(process.cwd(), "./schema/components.yml")
     const reader = new SchemaReader(projectSchema, [

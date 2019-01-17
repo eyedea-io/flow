@@ -8,18 +8,13 @@ import RefParser from 'json-schema-ref-parser'
 
 
 export class SchemaReader {
-  mainSchemaYML: Buffer;
-  mainSchemaJSON: Buffer;
-  additionalSchemas: Buffer[];
+  mainSchemaJSON: object;
+  additionalSchemas: object[];
   private validate: Ajv.ValidateFunction;
 
-  constructor(mainSchemaYML: string, additionlSchemas: string[]) {
-    this.mainSchemaYML = fs.readFileSync(mainSchemaYML);
-    this.mainSchemaJSON = yaml.load(this.mainSchemaYML.toString());
-
-    this.additionalSchemas = additionlSchemas.map(schema => {
-      return fs.readFileSync(path.join(schema));
-    });
+  constructor(mainSchemaJSON: object, additionlSchemas: object[]) {
+    this.mainSchemaJSON = mainSchemaJSON;
+    this.additionalSchemas = additionlSchemas;
 
     this.init();
   }
