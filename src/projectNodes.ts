@@ -8,15 +8,30 @@ import logger from 'debug'
 
 const log = logger('projectNodes')
 
-class ProjectNode {
+export class ProjectNode {
   name: string
   score: number
   node: any
+  config = {
+    srcDir: '/src/',
+    componentsDir: '/components/',
+  }
 
   constructor(node: any) {
     this.name = node.name
     this.node = node
     this.score = 0
+    this.getConfig()
+  }
+  
+  private getConfig = () => {
+    const configPath = path.join(process.cwd(), `./schema/schema.config.js`)
+    
+    if (fs.existsSync(configPath)) {
+      const config = require(configPath)
+      
+      this.config = {...this.config, ...config}
+    }
   }
 
   public bumpScore(points = 1) {
@@ -39,12 +54,11 @@ export class Component extends ProjectNode {
 
   constructor(node: any){
     super(node)
-
     this.path = path.join(
       process.cwd(),
-      'workspaces',
+      this.config.srcDir,
       this.node.env || '',
-      'components',
+      this.config.componentsDir,
       this.node.name.toLowerCase(),
       `${this.node.name.toLowerCase()}.type.ts`
     )

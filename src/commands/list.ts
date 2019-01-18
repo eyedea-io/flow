@@ -3,12 +3,11 @@ import path from "path"
 import traverse from "traverse"
 
 import { SchemaReader } from "../schemaReader"
+import { ENTITIES } from "../constants"
 import { printOrdered, getTypeFromPath } from "../utils"
 
 import { Component, View, Endpoint, Flow, Story, Store } from "../projectNodes"
 import { Command, flags } from "@oclif/command"
-
-const ENTITIES = ['flows', 'endpoints', 'views', 'stories', 'components']
 
 export default class List extends Command {
   static description = "List all objects"
@@ -20,12 +19,10 @@ export default class List extends Command {
   //     // flag with no value (-f, --force)
   //     force: flags.boolean({char: 'f'}),
   //   }
-
   //   static args = [{name: 'file'}]
 
   async run() {
     const { args, flags } = this.parse(List)
-
     const [projectSchema, ...additionalSchemas] = ENTITIES.map(item => {
       const schemaPath = path.join(process.cwd(), `./schema/${item}.js`)
 
@@ -63,7 +60,7 @@ export default class List extends Command {
 
     traverse(projectWithoutRefs).forEach(function(item) {
       if (typeof item === "object" && item !== null && !Array.isArray(item)) {
-        if (this.node.name) {
+        if (this.node.name && typeof this.node.name === 'string') {
           countObjects(this.node, this.path.slice(), "views")
           countObjects(this.node, this.path.slice(), "stories")
           countObjects(this.node, this.path.slice(), "components")

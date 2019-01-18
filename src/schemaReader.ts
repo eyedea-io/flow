@@ -31,12 +31,10 @@ export class SchemaReader {
     return this.validate(this.validate);
   }
   async getSchemaWithRefs() {
-    // return RefParser.dereference(this.mainSchemaJSON);
-      return RefParser.dereference(
-        Object.assign(this.mainSchemaJSON, ...this.additionalSchemas.map(item => ({
-          [item['$id'].substr(1)]: item
-        }))
-      )
+    return RefParser.dereference(
+      Object.assign(this.mainSchemaJSON, ...this.additionalSchemas.map(item => ({
+        [item['$id'].substr(1)]: item
+      })))
     );
   }
 }

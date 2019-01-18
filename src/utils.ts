@@ -9,8 +9,9 @@ export const printOrdered = (objectType: string, store: Store) => {
   // Get things from the store in form of array (only name and score properites)
   const objArray = Object.entries(store[objectType])
     .map(([key, value]: [string, any]) => ({
-      name: key,
+      name: objectType === 'endpoints' ? `${value.node.socket}/${key}` : key,
       score: value.score,
+      description: value.node.description,
       complexity: value.calculateComplexity(store),
       exist: value.exist
     }))
@@ -19,10 +20,16 @@ export const printOrdered = (objectType: string, store: Store) => {
   const tableData = [
     ['score', 'complexity', objectType, 'exist'].map(item => format.grey(item))
   ]
+  
   orderBy(objArray, ['score', 'complexity'], ['desc', 'asc']).forEach(element => {
-    tableData.push([element.score, element.complexity, element.name, element.exist ? 'yes' : 'no'])
-      
+    tableData.push([
+      element.score, 
+      element.complexity, 
+      [element.name, format.magenta(element.description || '')].filter(Boolean).join(' - '), 
+      element.exist ? 'yes' : 'no'
+    ])
   })
+
   const options = {
     border: getBorderCharacters('norc'),
     columns: {
@@ -45,7 +52,6 @@ export const getTypeFromPath = (pathToSearch: string[]) => {
   const lastItem = pathToSearch.pop()
     
   if (nodeTypes.indexOf(lastItem) > -1) {
-    // console.log('Found', lastItem)
     return lastItem
   } else {
     return getTypeFromPath(pathToSearch)

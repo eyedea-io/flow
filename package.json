@@ -52,6 +52,7 @@
     "lodash": "^4.17.11",
     "lodash.orderby": "^4.6.0",
     "lodash.sortby": "^4.7.0",
+    "mkdirp": "^0.5.1",
     "table": "^5.2.0",
     "traverse": "0.6.6",
     "tslib": "^1.9.3",
