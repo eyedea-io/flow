@@ -43,15 +43,19 @@ export class Component extends ProjectNode {
     this.path = path.join(
       process.cwd(),
       'workspaces',
-      this.node.env,
+      this.node.env || '',
       'components',
-      this.name.toLowerCase(),
-      `${this.name.toLowerCase()}.type.ts`
+      this.node.name.toLowerCase(),
+      `${this.node.name.toLowerCase()}.type.ts`
     )
     this.checkIfExist()
   }
-  calculateComplexity = () => {
-    return 1
+  calculateComplexity = (store: Store) => {
+    let complexity = 1
+    if (this.node.components) {
+      complexity += this.getObjectComplexity(store, 'components')
+    }
+    return complexity
   }
   async checkIfExist () {
     this.exist = fs.existsSync(this.path) 

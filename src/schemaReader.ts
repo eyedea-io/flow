@@ -1,7 +1,6 @@
-
-import fs from 'fs'
-import path from 'path'
-import yaml from 'js-yaml'
+// import fs from 'fs'
+// import path from 'path'
+// import yaml from 'js-yaml'
 import Ajv from 'ajv'
 import ProjectSchema from './schema'
 import RefParser from 'json-schema-ref-parser'
@@ -15,12 +14,12 @@ export class SchemaReader {
   constructor(mainSchemaJSON: object, additionlSchemas: object[]) {
     this.mainSchemaJSON = mainSchemaJSON;
     this.additionalSchemas = additionlSchemas;
-
     this.init();
   }
 
   init() {
     const ajv = new Ajv({ coerceTypes: true });
+
     this.additionalSchemas.forEach(schema => {
       ajv.addSchema(schema);
     });
@@ -32,6 +31,12 @@ export class SchemaReader {
     return this.validate(this.validate);
   }
   async getSchemaWithRefs() {
-    return RefParser.dereference(this.mainSchemaJSON);
+    // return RefParser.dereference(this.mainSchemaJSON);
+      return RefParser.dereference(
+        Object.assign(this.mainSchemaJSON, ...this.additionalSchemas.map(item => ({
+          [item['$id'].substr(1)]: item
+        }))
+      )
+    );
   }
 }

@@ -1,3 +1,4 @@
+import fs from "fs"
 import path from "path"
 import traverse from "traverse"
 
@@ -6,6 +7,8 @@ import { printOrdered, getTypeFromPath } from "../utils"
 
 import { Component, View, Endpoint, Flow, Story, Store } from "../projectNodes"
 import { Command, flags } from "@oclif/command"
+
+const ENTITIES = ['flows', 'endpoints', 'views', 'stories', 'components']
 
 export default class List extends Command {
   static description = "List all objects"
@@ -23,22 +26,23 @@ export default class List extends Command {
   async run() {
     const { args, flags } = this.parse(List)
 
-    const projectSchema = require(path.join(process.cwd(), "./schema/flows.js"))
-    const endpointSchema = require(path.join(process.cwd(), "./schema/endpoints.js"))
-    // const storiesSchema = path.join(process.cwd(), "./schema/stories.yml")
-    // const componentsSchema = path.join(process.cwd(), "./schema/components.yml")
-    const reader = new SchemaReader(projectSchema, [
-      endpointSchema,
-    //   storiesSchema,
-    //   storiesSchema,
-    //   componentsSchema
-    ])
+    const [projectSchema, ...additionalSchemas] = ENTITIES.map(item => {
+      const schemaPath = path.join(process.cwd(), `./schema/${item}.js`)
+
+      if (fs.existsSync(schemaPath)) {
+        return {
+          $id: `#${item}`,
+          ...require(schemaPath),
+        }
+      }
+    }).filter(Boolean)
+
+    const reader = new SchemaReader(projectSchema, additionalSchemas)
 
     reader.init()
     reader.validateSchema()
 
     const projectWithoutRefs = await reader.getSchemaWithRefs()
-
     const store = new Store()
 
     const countObjects = (
