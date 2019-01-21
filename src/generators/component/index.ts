@@ -13,11 +13,11 @@ export class ComponentGenerator extends BaseGenerator {
 
   replaceTag(content: string, tag: string, body: string): string {
     if (content.includes(`\/\/ ${tag}`)) {
-      if (content.includes(`\/\/ ${tag}end`)) {
-        content = content.replace(new RegExp(`\/\/ ${tag}(.|\n)*\/\/ ${tag}end`, 'm'), `\/\/ ${tag}`)
+      if (content.includes(`\/\/ ${tag}-end`)) {
+        content = content.replace(new RegExp(`\/\/ ${tag}(.|\n)*\/\/ ${tag}-end`, 'm'), `\/\/ ${tag}`)
       }
     }
-    return content.replace(`\/\/ ${tag}`, `\/\/ ${tag}\n${body}\n\/\/ ${tag}end`)
+    return content.replace(`\/\/ ${tag}`, `\/\/ ${tag}\n${body}\n\/\/ ${tag}-end`)
   }
 
   generate() {
@@ -28,19 +28,25 @@ export class ComponentGenerator extends BaseGenerator {
           const components = (v.node.components || []).map(item => this.nodes[item.name])
 
           fs.exists(filePath, async (exists) => {
-            const imports = sortBy(components.map(item => ({
+            const imports = components.map(item => ({
               name: item.node.name,
               path: relative(v.path, item.path),
             })).concat({
               name: 'Props',
               path: `./${v.normalizedName}.types`
-            }), 'name')
-            const props = {
-              name: v.node.name,
+            })
+
+            const options = {
+              node: v.node,
               normalizedName: v.normalizedName,
-              imports
+              imports: sortBy(imports, 'name'),
+              props: v.node.props || {}
             }
-            
+
+            templates.types(options).then(content => {
+              fs.writeFile(join(v.absolutePath, `${v.normalizedName}.types.ts`), content, () => {})
+            })
+
             if (exists) {
               fs.readFile(filePath, {
                 encoding: 'utf8'
@@ -48,8 +54,8 @@ export class ComponentGenerator extends BaseGenerator {
                 if (err) {
                   console.log(err)
                 }
-                if (props.imports) {
-                  let content = this.replaceTag(data, 'imports', templates.imports(props))
+                if (options.imports) {
+                  let content = this.replaceTag(data, 'imports', templates.imports(options))
                   content = content.trimRight()
                   content += '\n'
                   fs.writeFile(filePath, content, () => {})
@@ -57,10 +63,9 @@ export class ComponentGenerator extends BaseGenerator {
               })
               return
             }
-            fs.writeFile(join(v.absolutePath, `index.tsx`), templates.index(props), () => {})
-            fs.writeFile(join(v.absolutePath, `styled.tsx`), templates.styled(props), () => {})
-            fs.writeFile(join(v.absolutePath, `${v.normalizedName}.types.ts`), templates.types, () => {})
-            fs.writeFile(join(v.absolutePath, `${v.normalizedName}.tsx`), templates.component(props), () => {})
+            fs.writeFile(join(v.absolutePath, `index.tsx`), templates.index(options), () => {})
+            fs.writeFile(join(v.absolutePath, `styled.tsx`), templates.styled(options), () => {})
+            fs.writeFile(join(v.absolutePath, `${v.normalizedName}.tsx`), templates.component(options), () => {})
           })
         })
       })
