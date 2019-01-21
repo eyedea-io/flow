@@ -92,7 +92,7 @@ export class Component extends ProjectNode {
   }
 
   async checkIfExist () {
-    this.exist = fs.existsSync(this.path) 
+    this.exist = fs.existsSync(this.absolutePath) 
   }
 }
 

@@ -5,15 +5,14 @@ import { ComponentGenerator } from './component';
 export class FileGenerator {
   store: Store
   socketGenerator: SocketGenerator
-  componentGenerator: ComponentGenerator;
+  componentGenerator: ComponentGenerator
   
   constructor(store: Store) {
     this.store = store
-    // this.socketGenerator = new SocketGenerator(this.store.endpoints)
     this.componentGenerator = new ComponentGenerator(this.store.components)
   }
 
-  generateSockets() {
+  generateComponents() {
     this.componentGenerator.generate()
   }
 }

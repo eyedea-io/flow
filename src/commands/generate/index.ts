@@ -66,7 +66,7 @@ export default class Generate extends Command {
       }
     })
 
-    new FileGenerator(this.store).generateSockets()
+    new FileGenerator(this.store).generateComponents()
   }
 
   getNodesByType(nodeType: string) {
