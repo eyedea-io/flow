@@ -24,10 +24,13 @@ export class ComponentGenerator extends BaseGenerator {
     Object.entries(this.nodes)
       .forEach(([k, v]) => {
         mkdir(v.absolutePath, () => {
-          const filePath = join(v.absolutePath, `${v.normalizedName}.tsx`)
+          const componentPath = join(v.absolutePath, `${v.normalizedName}.tsx`)
+          const fixturePath = join(v.absolutePath, `${v.normalizedName}.fixture.tsx`)
+          const indexPath = join(v.absolutePath, `index.tsx`)
           const components = (v.node.components || []).map(item => this.nodes[item.name])
+          const stylePath = join(v.absolutePath, `${v.normalizedName}.styled.tsx`)
 
-          fs.exists(filePath, async (exists) => {
+          fs.exists(componentPath, async (exists) => {
             const imports = components.map(item => ({
               name: item.node.name,
               path: relative(v.path, item.path),
@@ -48,7 +51,7 @@ export class ComponentGenerator extends BaseGenerator {
             })
 
             if (exists) {
-              fs.readFile(filePath, {
+              fs.readFile(componentPath, {
                 encoding: 'utf8'
               }, (err, data) => {
                 if (err) {
@@ -58,14 +61,15 @@ export class ComponentGenerator extends BaseGenerator {
                   let content = this.replaceTag(data, 'imports', templates.imports(options))
                   content = content.trimRight()
                   content += '\n'
-                  fs.writeFile(filePath, content, () => {})
+                  fs.writeFile(componentPath, content, () => {})
                 }
               })
               return
             }
-            fs.writeFile(join(v.absolutePath, `index.tsx`), templates.index(options), () => {})
-            fs.writeFile(join(v.absolutePath, `styled.tsx`), templates.styled(options), () => {})
-            fs.writeFile(join(v.absolutePath, `${v.normalizedName}.tsx`), templates.component(options), () => {})
+            fs.writeFile(indexPath, templates.index(options), () => {})
+            fs.writeFile(stylePath, templates.styled(options), () => {})
+            fs.writeFile(fixturePath, templates.fixture(options), () => {})
+            fs.writeFile(componentPath, templates.component(options), () => {})
           })
         })
       })

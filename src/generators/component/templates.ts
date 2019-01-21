@@ -16,15 +16,28 @@ export const types = ({
   })
     .then(ts => `${baseTypeImport({extendName})}export interface Props ${extendName ? `extends ${extendName.split('#')[1]} ` : ''}${ts.replace('export interface MySchema ', '')}`)
 
+// Generate component.fixture.tsx
+export const fixture = ({node: {name}}) => `import {${name}} from './'
+
+export default [
+  {
+    component: ${name},
+    name: 'default',
+    wrap: true,
+    props: {},
+  }
+]
+`
+
 // Generate component.tsx
-export const component = ({node: {name}, imports}) => `// imports
+export const component = ({node: {name}, imports, normalizedName}) => `// imports
 ${imports.map(item => `import {${item.name}} from '${item.path}'`).join('\n')}
 // imports-end
 
-import {${name}} from './styled'
+import {${name}} from './${normalizedName}.styled'
 
 export default ({}: Props) => (
-  <${name} />
+  <${name}>TODO: ${name}</${name}>
 )
 `
 // Generate component imports
