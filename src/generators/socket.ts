@@ -7,6 +7,6 @@ export class SocketGenerator extends BaseGenerator {
   }
 
   generate() {
-    console.log(this.nodes)
+    // console.log(this.nodes)
   }
 }

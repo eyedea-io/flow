@@ -5,6 +5,7 @@
 import path from 'path'
 import fs from 'fs'
 import logger from 'debug'
+import kebabCase from 'lodash.kebabcase'
 
 const log = logger('projectNodes')
 
@@ -12,6 +13,8 @@ export class ProjectNode {
   name: string
   score: number
   node: any
+  path?: string
+  absolutePath?: string
   config = {
     srcDir: '/src/',
     componentsDir: '/components/',
@@ -46,31 +49,46 @@ export class ProjectNode {
     })
     return complexity
   }
+  
+  get normalizedName() {
+    return kebabCase(this.node.name)
+  }
 }
 
 export class Component extends ProjectNode {
   exist: boolean
   path: string
+  absolutePath: string
 
   constructor(node: any){
     super(node)
     this.path = path.join(
+      this.config.srcDir,
+      this.node.workspace || '',
+      this.config.componentsDir,
+      this.normalizedName,
+    )
+    this.absolutePath = path.join(
       process.cwd(),
       this.config.srcDir,
-      this.node.env || '',
+      this.node.workspace || '',
       this.config.componentsDir,
-      this.node.name.toLowerCase(),
-      `${this.node.name.toLowerCase()}.type.ts`
+      this.normalizedName,
+      // `${this.node.name.toLowerCase()}.type.ts`
     )
     this.checkIfExist()
   }
-  calculateComplexity = (store: Store) => {
+
+  calculateComplexity(store: Store) {
     let complexity = 1
+
     if (this.node.components) {
       complexity += this.getObjectComplexity(store, 'components')
     }
+
     return complexity
   }
+
   async checkIfExist () {
     this.exist = fs.existsSync(this.path) 
   }

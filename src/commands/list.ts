@@ -10,7 +10,7 @@ import { Component, View, Endpoint, Flow, Story, Store } from "../projectNodes"
 import { Command, flags } from "@oclif/command"
 
 export default class List extends Command {
-  static description = "List all objects"
+  static description = "list all objects"
 
   //   static flags = {
   //     help: flags.help({char: 'h'}),

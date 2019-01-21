@@ -1,15 +1,16 @@
-import { Command, flags } from "@oclif/command"
-import { ENTITIES } from '../constants'
-import { Store } from '../projectNodes';
-import { SchemaReader } from '../schemaReader';
+import { Command } from "@oclif/command"
+import { ENTITIES } from '../../constants'
+import { Store } from '../../projectNodes';
+import { SchemaReader } from '../../schemaReader';
 import path from 'path'
 import fs from 'fs'
-import { getTypeFromPath } from '../utils';
+import { getTypeFromPath } from '../../utils';
 import traverse = require('traverse');
-import { FileGenerator } from '../generators/file';
+import { FileGenerator } from '../../generators/file';
 
 export default class Generate extends Command {
-  static description = "Bootstrap files from schema"
+  static description = "bootstrap files from schema"
+  static examples = ['$ <%- config.bin %> generate']
   store = new Store()
 
   async getProjectSchema() {
@@ -34,7 +35,6 @@ export default class Generate extends Command {
 
   async run() {
     const { args, flags } = this.parse(Generate)
-    const endpoints = this.getNodesByType('endpoints')
     const project = await this.getProjectSchema()
 
     const addToStore = (
@@ -66,9 +66,7 @@ export default class Generate extends Command {
       }
     })
 
-    const generator = new FileGenerator(this.store)
-
-    generator.generateSockets()
+    new FileGenerator(this.store).generateSockets()
   }
 
   getNodesByType(nodeType: string) {
