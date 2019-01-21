@@ -42,18 +42,10 @@ export const printOrdered = (objectType: string, store: Store) => {
   console.log(table(tableData, options))
 }
 
-export const getTypeFromPath = (pathToSearch: string[]) => {
-  const nodeTypes = ['components', 'views', 'stories', 'endpoints', 'flows']
-  
-  if (pathToSearch.length === 0) {
-    return null
-  }
-
-  const lastItem = pathToSearch.pop()
-    
-  if (nodeTypes.indexOf(lastItem) > -1) {
-    return lastItem
-  } else {
-    return getTypeFromPath(pathToSearch)
-  }
+export const nodeTypeMap = {
+  'story': 'stories',
+  'endpoint': 'endpoints',
+  'component': 'components',
+  'view': 'views',
+  'flow': 'flows'
 }

@@ -4,7 +4,7 @@ import { Store } from '../../projectNodes';
 import { SchemaReader } from '../../schemaReader';
 import path from 'path'
 import fs from 'fs'
-import { getTypeFromPath } from '../../utils';
+import { nodeTypeMap } from '../../utils';
 import traverse = require('traverse');
 import { FileGenerator } from '../../generators/file';
 
@@ -42,7 +42,7 @@ export default class Generate extends Command {
       pathToSearch: string[],
       objType: keyof Store
     ) => {
-      if (getTypeFromPath(pathToSearch) === objType) {
+      if (nodeTypeMap[node.nodeType] === objType) {
         let obj = this.store[objType][node.name]
         
         if (!obj) {

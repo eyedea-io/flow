@@ -4,7 +4,7 @@ import traverse from "traverse"
 
 import { SchemaReader } from "../schemaReader"
 import { ENTITIES } from "../constants"
-import { printOrdered, getTypeFromPath } from "../utils"
+import { printOrdered, nodeTypeMap } from "../utils"
 
 import { Component, View, Endpoint, Flow, Story, Store } from "../projectNodes"
 import { Command, flags } from "@oclif/command"
@@ -47,7 +47,7 @@ export default class List extends Command {
       pathToSearch: string[],
       objType: keyof Store
     ) => {
-      if (getTypeFromPath(pathToSearch) === objType) {
+      if (nodeTypeMap[node.nodeType] === objType) {
         let obj = store[objType][node.name]
         if (!obj) {
           const class_ = store.getClass(objType)
@@ -59,14 +59,12 @@ export default class List extends Command {
     }
 
     traverse(projectWithoutRefs).forEach(function(item) {
-      if (typeof item === "object" && item !== null && !Array.isArray(item)) {
-        if (this.node.name && typeof this.node.name === 'string') {
-          countObjects(this.node, this.path.slice(), "views")
-          countObjects(this.node, this.path.slice(), "stories")
-          countObjects(this.node, this.path.slice(), "components")
-          countObjects(this.node, this.path.slice(), "endpoints")
-          countObjects(this.node, this.path.slice(), "flows")
-        }
+      if (item) {
+        countObjects(this.node, this.path.slice(), 'views')
+        countObjects(this.node, this.path.slice(), 'stories')
+        countObjects(this.node, this.path.slice(), 'components')
+        countObjects(this.node, this.path.slice(), 'endpoints')
+        countObjects(this.node, this.path.slice(), 'flows')
       }
     })
 
@@ -75,5 +73,6 @@ export default class List extends Command {
     printOrdered("components", store)
     printOrdered("views", store)
     printOrdered("stories", store)
+    printOrdered("flows", store)
   }
 }

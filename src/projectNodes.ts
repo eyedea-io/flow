@@ -43,10 +43,12 @@ export class ProjectNode {
 
   getObjectComplexity(store: Store, objectType) {
     let complexity = 0
-    this.node[objectType].forEach((item: any) => {
-      const o = store.getObjectByNameAndType(item.name, objectType)
-      complexity += o.calculateComplexity(store)
-    })
+    if (this.node[objectType]) {
+      this.node[objectType].forEach((item: any) => {
+        const o = store.getObjectByNameAndType(item.name, objectType)
+        complexity += o.calculateComplexity(store)
+      })
+    }
     return complexity
   }
   

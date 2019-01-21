@@ -4,7 +4,7 @@ import traverse from "traverse"
 
 import { SchemaReader } from "../schemaReader"
 import { ENTITIES } from "../constants"
-import { printOrdered, getTypeFromPath } from "../utils"
+import { printOrdered } from "../utils"
 
 import { Component, View, Endpoint, Flow, Story, Store } from "../projectNodes"
 import { Command, flags } from "@oclif/command"
