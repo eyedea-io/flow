@@ -14,7 +14,9 @@ export const types = ({
   compile(props, 'MySchema', {
     bannerComment: ''
   })
-    .then(ts => `${baseTypeImport({extendName})}export interface Props ${extendName ? `extends ${extendName.split('#')[1]} ` : ''}${ts.replace('export interface MySchema ', '')}`)
+    .then(ts => `${baseTypeImport({extendName})}export interface Props ${extendName ? `extends ${extendName.split('#')[1]} ` : ''}${ts
+      .replace('export interface MySchema ', '')
+      .replace(/;$/gm, '')}`)
 
 // Generate component.fixture.tsx
 export const fixture = ({node: {name}}) => `import {${name}} from './'
@@ -25,7 +27,7 @@ export default [
     name: 'default',
     wrap: true,
     props: {},
-  }
+  },
 ]
 `
 
@@ -33,6 +35,8 @@ export default [
 export const component = ({node: {name}, imports, normalizedName}) => `// imports
 ${imports.map(item => `import {${item.name}} from '${item.path}'`).join('\n')}
 // imports-end
+
+import * as React from 'react'
 
 import {${name}} from './${normalizedName}.styled'
 

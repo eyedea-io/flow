@@ -12,11 +12,16 @@ export class ComponentGenerator extends BaseGenerator {
   }
 
   replaceTag(content: string, tag: string, body: string): string {
+    if (!content) {
+      return ''
+    }
+
     if (content.includes(`\/\/ ${tag}`)) {
       if (content.includes(`\/\/ ${tag}-end`)) {
         content = content.replace(new RegExp(`\/\/ ${tag}(.|\n)*\/\/ ${tag}-end`, 'm'), `\/\/ ${tag}`)
       }
     }
+
     return content.replace(`\/\/ ${tag}`, `\/\/ ${tag}\n${body}\n\/\/ ${tag}-end`)
   }
 
@@ -31,19 +36,23 @@ export class ComponentGenerator extends BaseGenerator {
           const stylePath = join(v.absolutePath, `${v.normalizedName}.styled.tsx`)
 
           fs.exists(componentPath, async (exists) => {
-            const imports = components.map(item => ({
+            let imports = components.map(item => ({
               name: item.node.name,
               path: relative(v.path, item.path),
             })).concat({
               name: 'Props',
               path: `./${v.normalizedName}.types`
             })
+            imports = sortBy(imports, ['path'])
 
             const options = {
               node: v.node,
               normalizedName: v.normalizedName,
-              imports: sortBy(imports, 'name'),
-              props: v.node.props || {}
+              imports,
+              props: {
+                additionalProperties: false,
+                ...(v.node.props || {})
+              }
             }
 
             templates.types(options).then(content => {
@@ -54,10 +63,9 @@ export class ComponentGenerator extends BaseGenerator {
               fs.readFile(componentPath, {
                 encoding: 'utf8'
               }, (err, data) => {
-                if (err) {
-                  console.log(err)
-                }
-                if (options.imports) {
+                if (err && err.code === 'ENOENT') {
+                  console.error(`Component file doesn't exist: "${componentPath}"`)
+                } else if (options.imports) {
                   let content = this.replaceTag(data, 'imports', templates.imports(options))
                   content = content.trimRight()
                   content += '\n'
