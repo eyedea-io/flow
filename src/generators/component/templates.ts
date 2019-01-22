@@ -12,7 +12,10 @@ export const types = ({
   node: {extends: extendName}
 }) => 
   compile(props, 'MySchema', {
-    bannerComment: ''
+    bannerComment: '',
+    style: {
+      singleQuote: true,
+    }
   })
     .then(ts => `${baseTypeImport({extendName})}export interface Props ${extendName ? `extends ${extendName.split('#')[1]} ` : ''}${ts
       .replace('export interface MySchema ', '')
