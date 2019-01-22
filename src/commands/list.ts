@@ -69,10 +69,10 @@ export default class List extends Command {
     })
 
     console.log()
-    printOrdered("endpoints", store)
-    printOrdered("components", store)
-    printOrdered("views", store)
-    printOrdered("stories", store)
-    printOrdered("flows", store)
+    printOrdered('endpoints', store)
+    printOrdered('components', store)
+    printOrdered('views', store)
+    printOrdered('stories', store)
+    printOrdered('flows', store)
   }
 }
