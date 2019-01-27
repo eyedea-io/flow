@@ -70,10 +70,8 @@ export default class Generate extends Command {
 
     const errors = []
 
-    Object.entries(this.store.views).map(([key, item]) => {
-      const err = item.validateDependencies()
-
-      errors.push(...err)
+    this.store.getEntries().map(item => {
+      errors.push(...item.validateDependencies())
     })
 
     if (errors.length > 0) {

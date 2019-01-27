@@ -35,7 +35,7 @@ export class ProjectNode {
     this.score += points
   }
 
-  public validateDependencies() {
+  public validateDependencies(): string[] {
     const result = []
     const {views, components, stories, endpoints} = this.node
     const arr = {views, components, stories, endpoints}
@@ -169,6 +169,16 @@ export class Store {
 
   public getClass(typeName) {
     return this.classMap[typeName]
+  }
+
+  public getEntries() {
+    return [
+      ...Object.values(this.components),
+      ...Object.values(this.views),
+      ...Object.values(this.stories),
+      ...Object.values(this.endpoints),
+      ...Object.values(this.flows),
+    ]
   }
 
   addView (view: View) {
