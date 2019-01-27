@@ -1,19 +1,15 @@
-import fs from "fs"
-import path from "path"
-import traverse from "traverse"
+import fs from 'fs'
+import path from 'path'
 
-import { SchemaReader } from "../schemaReader"
-import { ENTITIES } from "../constants"
-import { printOrdered } from "../utils"
+import {ENTITIES} from '../constants'
+import {SchemaReader} from '../schemaReader'
 
-import { Component, View, Endpoint, Flow, Story, Store } from "../projectNodes"
-import { Command, flags } from "@oclif/command"
+import {Command} from '@oclif/command'
 
 export default class List extends Command {
-  static description = "print schema in JSON"
+  static description = 'print schema in JSON'
 
   async run() {
-    // const { args, flags } = this.parse(List)
     const [projectSchema, ...additionalSchemas] = ENTITIES.map(item => {
       const schemaPath = path.join(process.cwd(), `./schema/${item}.js`)
 
@@ -31,6 +27,7 @@ export default class List extends Command {
     reader.validateSchema()
 
     const projectWithoutRefs = await reader.getSchemaWithRefs()
+    // tslint:disable-next-line:no-console
     console.log(JSON.stringify(projectWithoutRefs, null, 2))
   }
 }

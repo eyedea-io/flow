@@ -1,18 +1,12 @@
-// flow: imports
-
-// flow
-
 import path from 'path'
 import fs from 'fs'
-import logger from 'debug'
 import kebabCase from 'lodash.kebabcase'
-
-const log = logger('projectNodes')
 
 export class ProjectNode {
   name: string
   score: number
   node: any
+  nodeType: string
   path?: string
   absolutePath?: string
   config = {
@@ -39,6 +33,22 @@ export class ProjectNode {
 
   public bumpScore(points = 1) {
     this.score += points
+  }
+
+  public validateDependencies() {
+    const result = []
+    const {views, components, stories, endpoints} = this.node
+    const arr = {views, components, stories, endpoints}
+
+    Object.keys(arr).filter(key => arr[key]).map(nodeType => {
+      const undefinedEntries = arr[nodeType].filter(item => item === undefined)
+
+      if (undefinedEntries.length) {
+        result.push(`${this.node.nodeType}.${this.name}.${nodeType} contains undefined entry.`)
+      }
+    })
+
+    return result
   }
 
   getObjectComplexity(store: Store, objectType) {

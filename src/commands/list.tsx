@@ -1,16 +1,16 @@
-import fs from "fs"
-import path from "path"
-import traverse from "traverse"
+import fs from 'fs'
+import path from 'path'
+import traverse from 'traverse'
 
-import { SchemaReader } from "../schemaReader"
-import { ENTITIES } from "../constants"
-import { printOrdered, nodeTypeMap } from "../utils"
+import {ENTITIES} from '../constants'
+import {SchemaReader} from '../schemaReader'
+import {nodeTypeMap, printOrdered} from '../utils'
 
-import { Component, View, Endpoint, Flow, Story, Store } from "../projectNodes"
-import { Command, flags } from "@oclif/command"
+import {Command} from '@oclif/command'
+import {Store} from '../projectNodes'
 
 export default class List extends Command {
-  static description = "list all objects"
+  static description = 'list all objects'
 
   //   static flags = {
   //     help: flags.help({char: 'h'}),
@@ -22,7 +22,7 @@ export default class List extends Command {
   //   static args = [{name: 'file'}]
 
   async run() {
-    const { args, flags } = this.parse(List)
+    const {args, flags} = this.parse(List)
     const [projectSchema, ...additionalSchemas] = ENTITIES.map(item => {
       const schemaPath = path.join(process.cwd(), `./schema/${item}.js`)
 
@@ -50,25 +50,26 @@ export default class List extends Command {
       if (nodeTypeMap[node.nodeType] === objType) {
         let obj = store[objType][node.name]
         if (!obj) {
-          const class_ = store.getClass(objType)
-          obj = new class_(node)
+          const klass = store.getClass(objType)
+          obj = new klass(node)
           store.addNode(obj, objType)
         }
         obj.bumpScore()
       }
     }
 
-    traverse(projectWithoutRefs).forEach(function(item) {
-      if (item) {
-        countObjects(this.node, this.path.slice(), 'views')
-        countObjects(this.node, this.path.slice(), 'stories')
-        countObjects(this.node, this.path.slice(), 'components')
-        countObjects(this.node, this.path.slice(), 'endpoints')
-        countObjects(this.node, this.path.slice(), 'flows')
+    traverse(projectWithoutRefs).forEach(function(item: any) {
+      if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
+        if (this.node.name && typeof this.node.name === 'string') {
+          countObjects(this.node, this.path.slice(), 'views')
+          countObjects(this.node, this.path.slice(), 'stories')
+          countObjects(this.node, this.path.slice(), 'components')
+          countObjects(this.node, this.path.slice(), 'endpoints')
+          countObjects(this.node, this.path.slice(), 'flows')
+        }
       }
     })
 
-    console.log()
     printOrdered('endpoints', store)
     printOrdered('components', store)
     printOrdered('views', store)

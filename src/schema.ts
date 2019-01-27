@@ -8,20 +8,20 @@ export default {
           views: {
             type: 'array',
             items: {
-              $ref: '#/definitions/view'
-            }
-          }
-        }
+              $ref: '#/definitions/view',
+            },
+          },
+        },
       },
       flow: {
         properties: {
           stories: {
             type: 'array',
             items: {
-              $ref: '#/definitions/story'
-            }
-          }
-        }
+              $ref: '#/definitions/story',
+            },
+          },
+        },
       },
       view: {
         properties: {
@@ -31,19 +31,19 @@ export default {
               components: {
                 type: 'array',
                 items: {
-                  $ref: '#/definitions/component'
-                }
+                  $ref: '#/definitions/component',
+                },
               },
               endpoints: {
                 type: 'array',
                 items: {
-                  $ref: '#/definitions/endpoint'
-                }
-              }
-            }
-          }
-        }
-      }
+                  $ref: '#/definitions/endpoint',
+                },
+              },
+            },
+          },
+        },
+      },
     },
     properties: {
       // views: {
@@ -94,11 +94,10 @@ export default {
         items: {
           properties: {
             name: {
-              type: 'string'
-            }
-          }
-        }
-      }
-    }
+              type: 'string',
+            },
+          },
+        },
+      },
+    },
 }
-  
