@@ -14,20 +14,23 @@ export default class Generate extends Command {
   store = new Store()
 
   async getProjectSchema() {
-    const [projectSchema, ...additionalSchemas] = ENTITIES.map(item => {
-      const schemaPath = path.join(process.cwd(), `./schema/${item}.js`)
+    const schema = ENTITIES
+      .map(item => {
+        const schemaPath = path.join(process.cwd(), `./schema/${item}.js`)
 
-      if (fs.existsSync(schemaPath)) {
-        return {
-          $id: `#${item}`,
-          ...require(schemaPath),
+        if (fs.existsSync(schemaPath)) {
+          return {
+            $id: `#${item}`,
+            ...require(schemaPath),
+          }
         }
-      }
-    }).filter(Boolean)
+      })
+      .filter(Boolean)
+      // .reduce((all, item) => ({...all, ...item}), {})
 
-    const reader = new SchemaReader(projectSchema, additionalSchemas)
+    console.log(schema)
+    const reader = new SchemaReader(schema)
 
-    reader.init()
     reader.validateSchema()
 
     return reader.getSchemaWithRefs()
