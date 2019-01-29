@@ -1,4 +1,4 @@
-import { ProjectNode } from '../projectNodes'
+import {ProjectNode} from '../projectNodes'
 
 export class BaseGenerator {
   nodes: Record<string, ProjectNode>

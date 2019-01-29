@@ -35,7 +35,7 @@ export const printOrdered = (objectType: string, store: Store) => {
     columns: {
         0: { width: 10},
         1: { width: 10},
-        2: { width: 100},
+        2: { width: 60},
     }
   }
   

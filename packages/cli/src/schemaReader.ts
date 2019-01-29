@@ -30,6 +30,7 @@ export class SchemaReader {
   validateSchema() {
     return this.validate(this.validate);
   }
+  
   async getSchemaWithRefs() {
     return RefParser.dereference(
       Object.assign(this.mainSchemaJSON, ...this.additionalSchemas.map(item => ({

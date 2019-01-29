@@ -8,9 +8,9 @@ export {Props} from './${normalizedName}.types'
 // Generate component.types.ts
 const baseTypeImport = ({extendName}) => `${extendName ? `import {${extendName.split('#')[1]}} from '${extendName.split('#')[0]}'\n\n` : ''}`
 export const types = ({
-  props, 
+  props,
   node: {extends: extendName}
-}) => 
+}) =>
   compile(props, 'MySchema', {
     bannerComment: '',
     style: {
