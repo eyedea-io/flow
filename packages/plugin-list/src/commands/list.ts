@@ -1,20 +1,11 @@
 import {getSchemaWithRefs, nodeTypeMap, Store} from '@flow/schema-reader'
 import {Command} from '@oclif/command'
-import * as traverse from 'traverse'
+import traverse from 'traverse'
 
 import {printOrdered} from '../utils'
 
 export default class List extends Command {
   static description = 'list all objects'
-
-  //   static flags = {
-  //     help: flags.help({char: 'h'}),
-  //     // flag with a value (-n, --name=VALUE)
-  //     name: flags.string({char: 'n', description: 'name to print'}),
-  //     // flag with no value (-f, --force)
-  //     force: flags.boolean({char: 'f'}),
-  //   }
-  //   static args = [{name: 'file'}]
 
   async run() {
     const {args, flags} = this.parse(List)

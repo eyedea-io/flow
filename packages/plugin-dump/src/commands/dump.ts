@@ -1,7 +1,5 @@
-import {ENTITIES, SchemaReader, getSchemaWithRefs} from '@flow/schema-reader'
+import {getSchemaWithRefs} from '@flow/schema-reader'
 import {Command} from '@oclif/command'
-import * as fs from 'fs'
-import * as path from 'path'
 
 export default class List extends Command {
   static description = 'print schema in JSON'

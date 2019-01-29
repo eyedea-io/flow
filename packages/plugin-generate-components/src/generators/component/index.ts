@@ -1,6 +1,6 @@
 import {ProjectNode} from '@flow/schema-reader'
-import * as fs from 'fs-extra'
-import * as sortBy from 'lodash.sortby'
+import fs from 'fs-extra'
+import sortBy from 'lodash.sortby'
 import {join, relative} from 'path'
 
 import {BaseGenerator} from '../base'

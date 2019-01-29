@@ -1,5 +1,5 @@
-import * as path from 'path'
-import * as fs from 'fs'
+import path from 'path'
+import fs from 'fs'
 
 import { SchemaReader } from './schemaReader'
 import {ENTITIES} from './constants'
@@ -27,6 +27,11 @@ const getSchemaWithRefs = () => {
   return reader.getSchemaWithRefs()
 }
 
-
-
-export {getSchemaWithRefs, SchemaReader, ENTITIES, nodeTypeMap, ProjectNode, Store}
+export {
+  getSchemaWithRefs,
+  SchemaReader,
+  ENTITIES,
+  nodeTypeMap,
+  ProjectNode,
+  Store
+}

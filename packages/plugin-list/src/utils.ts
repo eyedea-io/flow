@@ -1,6 +1,6 @@
 import {Store} from '@flow/schema-reader'
 import format from 'chalk'
-import * as orderBy from 'lodash.orderby'
+import orderBy from 'lodash.orderby'
 import {getBorderCharacters, table} from 'table'
 
 export const printOrdered = (objectType: string, store: Store) => {

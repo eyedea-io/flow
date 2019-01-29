@@ -1,6 +1,6 @@
 import {getSchemaWithRefs, nodeTypeMap, Store} from '@flow/schema-reader'
 import {Command} from '@oclif/command'
-import * as traverse from 'traverse'
+import traverse from 'traverse'
 
 import {FileGenerator} from '../generators/file'
 
@@ -12,7 +12,7 @@ export default class Generate extends Command {
   async run() {
     // tslint:disable-next-line:no-console
     console.time('Done in')
-    const {args, flags} = this.parse(Generate)
+    // const {args, flags} = this.parse(Generate)
     const project = await getSchemaWithRefs()
 
     const addToStore = (
