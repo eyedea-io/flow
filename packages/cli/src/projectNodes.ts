@@ -1,7 +1,3 @@
-// flow: imports
-
-// flow
-
 import path from 'path'
 import fs from 'fs'
 import logger from 'debug'
