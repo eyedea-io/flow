@@ -1,12 +1,16 @@
 {
   "name": "@flow/cli",
-  "version": "0.0.2",
-  "description": "Postman plugin for Syncano CLI",
+  "version": "0.0.1",
+  "description": "Mighty Flow - ultimate solution for all that mess in product development",
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc -w",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "tslint -p test -t stylish",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest",
+    "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md"
   },
   "author": "Eyedea <hello@eyedea.io> https://eyedea.io",
   "license": "MIT",
@@ -24,10 +28,16 @@
     "bin": "p",
     "plugins": [
       "@oclif/plugin-help",
-      "@oclif/plugin-plugins"
+      "@oclif/plugin-plugins",
+      "@flow/plugin-generate-components",
+      "@flow/plugin-list",
+      "@flow/plugin-dump"
     ]
   },
   "dependencies": {
+    "@flow/plugin-generate-components": "0.0.1",
+    "@flow/plugin-list": "0.0.1",
+    "@flow/plugin-dump": "0.0.1",
     "@oclif/command": "^1.5.8",
     "@oclif/config": "^1.10.4",
     "@oclif/plugin-help": "^2.1.4",

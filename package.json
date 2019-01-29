@@ -9,6 +9,7 @@
   "author": "Eyedea <hello@eyedea.io> https://eyedea.io",
   "license": "MIT",
   "devDependencies": {
+    "@oclif/dev-cli": "^1.21.0",
     "lerna": "^3.10.7"
   },
   "dependencies": {}
