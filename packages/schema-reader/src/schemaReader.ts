@@ -1,6 +1,3 @@
-// import fs from 'fs'
-// import path from 'path'
-// import yaml from 'js-yaml'
 import Ajv from 'ajv'
 import ProjectSchema from './schema'
 import RefParser from 'json-schema-ref-parser'
