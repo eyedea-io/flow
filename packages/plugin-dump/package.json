@@ -53,7 +53,7 @@
   },
   "repository": "eyedea-io/generate-components",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf lib && tsc",
     "build:watch": "tsc -w",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tslint -p test -t stylish",

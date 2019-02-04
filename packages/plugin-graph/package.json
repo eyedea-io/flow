@@ -1,20 +1,16 @@
 {
-  "name": "@flow/plugin-list",
-  "description": "Flat list plugin",
+  "name": "@flow/plugin-graph",
+  "description": "Dump spec in graphlib compatible JSON",
   "version": "0.0.1",
   "author": "mkucharz @mkucharz",
   "bugs": "https://github.com/eyedea-io/generate-components/issues",
   "dependencies": {
     "@oclif/command": "^1.5.8",
     "@oclif/config": "^1.12.0",
-    "@types/lodash": "^4.14.120",
-    "@types/traverse": "^0.6.32",
-    "chalk": "^2.4.2",
     "fs-extra": "^7.0.1",
+    "graphlib": "^2.1.7",
     "json-schema-to-typescript": "^6.1.1",
-    "lodash.orderby": "^4.6.0",
     "lodash.sortby": "^4.7.0",
-    "table": "^5.2.2",
     "traverse": "^0.6.6",
     "tslib": "^1.9.3"
   },

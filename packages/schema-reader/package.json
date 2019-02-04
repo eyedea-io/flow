@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf lib && tsc",
     "build:watch": "tsc -w"
   },
   "author": "Eyedea <hello@eyedea.io> https://eyedea.io",

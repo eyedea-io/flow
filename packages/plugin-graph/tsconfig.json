@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "importHelpers": true,
     "module": "commonjs",
     "outDir": "lib",
     "rootDir": "src",
     "strict": false,
     "target": "es2017",
-    "composite": true,
-    "allowSyntheticDefaultImports": true
+    "composite": true
   },
   "include": [
     "src/**/*"

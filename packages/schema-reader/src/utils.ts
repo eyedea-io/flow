@@ -3,5 +3,6 @@ export const nodeTypeMap = {
   'endpoint': 'endpoints',
   'component': 'components',
   'view': 'views',
+  'viewStory': 'viewStories',
   'flow': 'flows'
 }
