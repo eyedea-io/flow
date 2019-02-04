@@ -144,12 +144,20 @@ export class Endpoint extends ProjectNode {
   }
 }
 
+export class ViewStory extends ProjectNode {
+  calculateComplexity = () => {
+    let complexity = 1
+    return complexity
+  }
+}
+
 export class Store {
   components: Record<string, Component>
   views: Record<string, View>
   stories: Record<string, Story>
   endpoints: Record<string, Endpoint>
   flows: Record<string, Flow>
+  viewStories: Record<string, ViewStory>
 
   private classMap = {
     views: View,
@@ -157,11 +165,13 @@ export class Store {
     endpoints: Endpoint,
     stories: Story,
     flows: Flow,
+    viewStories: ViewStory,
   }
 
   constructor () {
     this.components = {}
     this.views = {}
+    this.viewStories = {}
     this.stories = {}
     this.endpoints = {}
     this.flows = {}

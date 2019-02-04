@@ -29,10 +29,9 @@ export class SchemaReader {
   }
 
   async getSchemaWithRefs() {
-    return RefParser.dereference(
-      Object.assign(this.mainSchemaJSON, ...this.additionalSchemas.map(item => ({
-        [item['$id'].substr(1)]: item
-      })))
-    );
+    Object.assign(this.mainSchemaJSON, ...this.additionalSchemas.map(item => ({
+      [item['$id'].substr(1)]: item
+    })))
+    return RefParser.dereference(this.mainSchemaJSON)
   }
 }
