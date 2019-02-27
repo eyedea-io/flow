@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./build/",
+    "noEmit": true,
+    "paths": {
+      "@shared/*": ["./workspaces/shared/*"],
+      "@website/*": ["./workspaces/website/*"]
+    },
+    "noUnusedParameters": true,
+    "noUnusedLocals": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "target": "esnext",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "module": "esnext",
+    "lib": [
+      "es6",
+      "dom",
+      "es2017"
+    ],
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
+  },
+  "files": [
+    "./typings/index.d.ts"
+  ],
+  "include": [
+    "workspaces/**/*"
+  ],
+  "exclude": [
+    ".config/**/*",
+    ".templates/**/*"
+  ]
+}

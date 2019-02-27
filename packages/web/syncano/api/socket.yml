@@ -1,0 +1,17 @@
+name: api
+description: Project API
+version: 0.0.1
+
+classes:
+  user:
+    - name: fullName
+      type: string
+
+endpoints:
+  user/profile:
+    description: Get user profile
+    response:
+      success:
+        exit_code: 200
+      fail:
+        exit_code: 400

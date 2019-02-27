@@ -1,0 +1,261 @@
+version: 2
+
+setup-env: &setup-env
+  run:
+    name: Setting up env variables
+    command: |
+      if [ "${CIRCLE_BRANCH}" == "production" ]; then
+        echo 'export SENTRY_ENV=production' >> $BASH_ENV
+        env=PRODUCTION
+      else
+        echo 'export SENTRY_ENV=staging' >> $BASH_ENV
+        env=STAGING
+      fi
+
+      eval echo "export SYNCANO_PROJECT_INSTANCE=\$${env}_SYNCANO_PROJECT_INSTANCE" >> $BASH_ENV
+      eval echo "export PUBLIC_URL=\$${env}_PUBLIC_URL" >> $BASH_ENV
+      echo 'export SYNCANO_AUTH_KEY=$SYNCANO_AUTH_KEY' >> $BASH_ENV
+
+jobs:
+  install:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package-lock.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+      - run:
+          name: Create .npmrc with Font Awesome Pro token
+          command: echo @fortawesome:registry=https://npm.fontawesome.com/$FONTAWESOME_TOKEN >> .npmrc
+      - run:
+          name: Installing Dependencies
+          command: npm i
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - persist_to_workspace:
+          root: .
+          paths:
+            - node_modules
+
+  build-website:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - *setup-env
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build website workspace
+          command: npm run build website
+      - store_artifacts:
+          path: .build/website
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .build/website
+
+  test-lint:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Linting Code
+          command: npm run test-lint
+
+  test-size:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Checking build size
+          command: npm run test-size
+
+  test-unit:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - run:
+          name: Running unit tests
+          command: npm run test-unit
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .coverage
+
+  upload-website:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - *setup-env
+      - attach_workspace:
+          at: .
+      - run:
+          name: Uploading website and setting CNAME
+          command: |
+            npx syncano-cli hosting sync website
+            npx syncano-cli hosting config website -b true # --cname YOUR_CNAME
+
+  upload-staging-website:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - *setup-env
+      - attach_workspace:
+          at: .
+      - run:
+          name: Uploading website and setting CNAME
+          command: |
+            npx syncano-cli hosting sync website
+            npx syncano-cli hosting config website -b true # --cname YOUR_CNAME
+
+  deploy-sockets:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:9.10.0
+    steps: &deploy-sockets-steps
+      - checkout
+      - *setup-env
+      - attach_workspace:
+          at: .
+      - run: npx syncano-cli deploy
+
+  deploy-staging-sockets:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps: *deploy-sockets-steps
+
+  configure-sentry-deploy-tracking:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - *setup-env
+      - attach_workspace:
+          at: .
+      - run: echo 'export VERSION=$(npx sentry-cli releases propose-version)' >> $BASH_ENV
+      - run: npx sentry-cli releases new -p $SENTRY_PROJECT $VERSION
+      - run: npx sentry-cli releases set-commits --auto $VERSION
+      - run: npx sentry-cli releases deploys $VERSION new -e $SENTRY_ENV
+
+  report-coverage:
+    docker:
+      - image: circleci/node:9.10.0
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - *setup-env
+      - attach_workspace:
+          at: .
+      - run:
+          name: Report CodeCov
+          command: npm run report-coverage
+
+  test-lighthouse:
+    docker:
+      - image: circleci/node:9.8.0-browsers
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - *setup-env
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run Lighthouse Test
+          command: npx lighthouse-ci $PUBLIC_URL --score=90
+      - store_artifacts:
+          path: .lighthouse
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+      - install
+      - build-website:
+          requires:
+            - install
+      - test-lint:
+          requires:
+            - install
+      - test-unit:
+          requires:
+            - install
+      - deploy-staging-sockets:
+          requires:
+            - install
+          filters:
+            branches:
+              only: master
+      - test-size:
+          requires:
+            - build-website
+      - upload-website:
+          requires:
+            - deploy-sockets
+          filters:
+            branches:
+              only: production
+      - upload-staging-website:
+          requires:
+            - build-website
+          filters:
+            branches:
+              only: master
+      - test-lighthouse:
+          requires:
+            - upload-staging-website
+          filters:
+            branches:
+              only: master
+      - deploy-sockets:
+          requires:
+            - test-lint
+            - test-unit
+          filters:
+            branches:
+              only: production
+      - configure-sentry-deploy-tracking:
+          requires:
+            - upload-website
+          filters:
+            branches:
+              only: production
+      - configure-sentry-deploy-tracking:
+          requires:
+            - upload-staging-website
+          filters:
+            branches:
+              only: master
+      - report-coverage:
+          requires:
+            - test-lint
+            - test-size
+            - test-unit
+          filters:
+            branches:
+              only: master

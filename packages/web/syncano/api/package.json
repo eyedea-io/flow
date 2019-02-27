@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "npm install && npm run build:src && npm run build:env",
+    "build:src": "sh ./bin/compile",
+    "build:env": "sh ./bin/compile-env"
+  },
+  "dependencies": {
+    "@eyedea/syncano": "0.2.0",
+    "@syncano/core": "0.13.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.1.2",
+    "@babel/core": "7.1.2",
+    "@babel/preset-env": "7.1.0",
+    "@babel/preset-typescript": "7.1.0",
+    "typescript": "3.1.3"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-typescript",
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "8"
+          }
+        }
+      ]
+    ]
+  }
+}

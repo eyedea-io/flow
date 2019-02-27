@@ -1,0 +1,5 @@
+hosting:
+  website:
+    src: .build/website
+    config:
+      browser_router: true

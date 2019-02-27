@@ -4,4 +4,4 @@ dist
 lib
 schema
 plugins
-workspaces
+/workspaces
