@@ -6,6 +6,7 @@ import {Modal} from '@website/stores/modal'
 import {Instance, types} from 'mobx-state-tree'
 import * as React from 'react'
 import {hot} from 'react-hot-loader'
+import {NodeStore} from './node-store'
 
 export const Store = hot(module)(types
   .model('Store', {
@@ -13,6 +14,7 @@ export const Store = hot(module)(types
     langStore: types.optional(LangStore, {}),
     userStore: types.optional(UserStore, {}),
     formStore: types.optional(FormStore, {}),
+    nodeStore: types.optional(NodeStore, {}),
   }))
   .views(self => ({
     get t() {
