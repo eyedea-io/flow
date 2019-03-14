@@ -30,10 +30,12 @@ export const UserStore = types
         localStorage.setItem('profile', JSON.stringify(self.profile))
 
         Sentry.configureScope((scope) => {
-          scope.setUser({
-            id: self.profile.id.toString(),
-            email: self.profile.username,
-          })
+          if (self.profile) {
+            scope.setUser({
+              id: self.profile.id.toString(),
+              email: self.profile.username,
+            })
+          }
         })
       } catch (error) {
         if (error.response.status === 401) {
@@ -46,7 +48,8 @@ export const UserStore = types
   .actions(self => ({
     afterCreate: flow(function * () {
       self.token = window.localStorage.getItem('token') || ''
-      self.profile = JSON.parse(window.localStorage.getItem('profile')) || undefined
+      const profileJson = window.localStorage.getItem('profile')
+      self.profile = profileJson === null ? undefined : JSON.parse(profileJson)
       self.fetchProfile()
     }),
     logout() {

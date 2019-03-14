@@ -17,7 +17,7 @@ const DOMAttributeNames = {
 }
 
 export class Head extends Component {
-  updatePromise = null
+  updatePromise: Promise<any> | null = null
 
   constructor(props, state) {
     super(props, state)

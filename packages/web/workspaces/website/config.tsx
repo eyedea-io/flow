@@ -1,15 +1,15 @@
 import {color, media, spacing} from '@shared/utils/css-helpers'
 import {Theme} from '@shared/utils/styled'
 
-export const POSTMAN_API_URL = process.env.POSTMAN_API_URL
+export const POSTMAN_API_URL = process.env.POSTMAN_API_URL || ''
 export const WORKSPACE_TITLE = process.env.WORKSPACE_TITLE || 'Webmaster App'
 export const WORKSPACE_LANG = process.env.WORKSPACE_LANG || 'EN'
 export const SENTRY_DSN = process.env.SENTRY_DSN
 export const RELEASE = process.env.RELEASE
 export const SENTRY_ENV = process.env.SENTRY_ENV
 export const NODE_ENV = process.env.NODE_ENV
-export const LOCAL_STORAGE_KEY = process.env.LOCAL_STORAGE_KEY
-export const SYNCANO_PROJECT_INSTANCE = process.env.SYNCANO_PROJECT_INSTANCE
+export const LOCAL_STORAGE_KEY = process.env.LOCAL_STORAGE_KEY || 'flow'
+export const SYNCANO_PROJECT_INSTANCE = process.env.SYNCANO_PROJECT_INSTANCE || ''
 export const ROUTER_BASEPATH = process.env.ROUTER_BASEPATH || ''
 export const UI: Theme = {
   spacing: spacing(8),

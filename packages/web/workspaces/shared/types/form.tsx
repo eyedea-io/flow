@@ -1,5 +1,5 @@
 import {MessageBag} from '@shared/types/message-bag'
-import {getRoot, types} from 'mobx-state-tree'
+import {getRoot, Instance, types} from 'mobx-state-tree'
 
 const Field = {
   name: types.string,
@@ -12,11 +12,13 @@ export const Form = types
     name: types.string,
     fields: types.optional(types.map(types.frozen(Field)), {}),
     originalFields: types.optional(types.map(types.frozen(Field)), {}),
-    errors: types.optional(MessageBag, {}),
+    errors: types.optional(MessageBag, () => MessageBag.create({messages: {}})),
   })
   .views(self => ({
     value(name: string, defaultValue: any = ''): any {
-      return self.fields.get(name).value || defaultValue
+      const field = self.fields.get(name)
+
+      return field ? field.value || defaultValue : defaultValue
     },
     get data(): any  {
       return Array.from(self.fields.entries())
@@ -30,25 +32,32 @@ export const Form = types
   }))
   .actions(self => ({
     afterCreate() {
-      self.originalFields.replace(self.fields)
+      self.originalFields.replace(self.fields as any)
     },
     handleChange(event: React.FormEvent<HTMLInputElement> | string, value?: any) {
       const name = typeof event === 'string' ? event : event.currentTarget.name
       const val = typeof event === 'string' ? value : event.currentTarget.value
+      const field = self.fields.get(name)
 
-      self.fields.set(name, {
-        ...self.fields.get(name),
-        value: val || '',
-      })
+      if (field) {
+        self.fields.set(name, {
+          ...field,
+          value: val || '',
+        })
+      }
     },
   }))
   .actions(self => ({
     clear() {
-      self.fields.replace(self.originalFields)
+      self.fields.replace(self.originalFields as any)
     },
     field(name: string): any {
       const {t} = getRoot<any>(self)
-      const {placeholder} = self.fields.get(name)
+      const field = self.fields.get(name)
+
+      if (!field) {return {}}
+
+      const {placeholder} = field
 
       return {
         ...self.fields.get(name),
@@ -60,5 +69,4 @@ export const Form = types
     },
   }))
 
-type FormType = typeof Form.Type
-export interface Form extends FormType {}
+export interface Form extends Instance<typeof Form> {}

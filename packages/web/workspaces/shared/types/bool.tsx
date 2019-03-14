@@ -5,6 +5,7 @@ export const BoolModel = types
   .model('Bool', {
     value: false,
   })
+  .postProcessSnapshot(self => self.value)
   .actions(self => ({
     setTrue() {
       self.value = true

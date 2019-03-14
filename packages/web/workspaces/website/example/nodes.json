@@ -1,0 +1,54 @@
+[
+  {
+    "uuid": "c94b59d4-241f-4990-9d54-4d47545cf6d8",
+    "nodeType": "Project",
+    "x": 24,
+    "y": 48,
+    "width": 48,
+    "height": 24,
+    "data": {
+      "title": "Winvest",
+      "nodeType": "Project"
+    }
+  },
+  {
+    "uuid": "b0a192f3-07ce-4370-9f45-4e1c9bc56ac0",
+    "nodeType": "Component",
+    "x": 132,
+    "y": 240,
+    "width": 48,
+    "height": 24,
+    "data": {
+      "title": "Input",
+      "nodeType": "Component",
+      "props": {
+        "required": ["src"],
+        "properties": {
+          "src": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  {
+    "uuid": "b01dacf3-07ce-4370-9f45-4e1c9bc56ac0",
+    "nodeType": "Context",
+    "x": 132,
+    "y": 120,
+    "width": 48,
+    "height": 24,
+    "data": {
+      "title": "Login",
+      "nodeType": "Context",
+      "props": {
+        "required": ["src"],
+        "properties": {
+          "src": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+]

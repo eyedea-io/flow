@@ -2,7 +2,7 @@ import {Text} from '@shared/components/text'
 import {theme} from '@shared/theme'
 import {styled} from '@shared/utils/styled'
 
-export const S = {
+export default {
   Toolbar: styled.div`
     position: absolute;
     border-radius: ${theme.radius};

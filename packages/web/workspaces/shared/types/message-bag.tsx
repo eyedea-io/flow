@@ -33,15 +33,17 @@ export const MessageBag = types
       return self.messages.has(key)
     },
     first(key?: string): string {
-      const message = self.messages.get(key)
-
       if (key === undefined && self.messages.size) {
         const [name, value] = self.messages.entries()[0]
 
         return value || name
+      } else if (key !== undefined) {
+        const message = self.messages.get(key)
+
+        return Array.isArray(message) ? message[0] : message
       }
 
-      return Array.isArray(message) ? message[0] : message
+      return ''
     },
     get(key: string): Array<string> {
       const message = self.messages.get(key)
@@ -53,7 +55,7 @@ export const MessageBag = types
       return []
     },
     get all(): Array<string> {
-      const result = []
+      const result: string[] = []
 
       self.messages.forEach((value, key) => {
         if (value === '') {

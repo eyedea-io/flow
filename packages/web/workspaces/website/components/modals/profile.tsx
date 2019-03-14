@@ -1,19 +1,14 @@
-import {WithStore} from '@website/types'
-import {inject, observer} from 'mobx-react'
+import {useStore} from '@website/hooks/use-store'
 import * as React from 'react'
 
-interface Props extends WithStore {}
+const Profile = () => {
+  const {userStore} = useStore()
 
-@inject('store')
-@observer
-class Profile extends React.Component<Props> {
-  render() {
-    return (
-      <div>
-        <b>Email:</b> {this.props.store.userStore.profile.username}
-      </div>
-    )
-  }
+  return (
+    <div>
+      <b>Email:</b> {userStore.profile ? userStore.profile.username : ''}
+    </div>
+  )
 }
 
 export {Profile}

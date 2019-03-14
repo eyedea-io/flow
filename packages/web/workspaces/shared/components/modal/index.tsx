@@ -24,6 +24,7 @@ export interface Props {
 @observer
 class Modal extends React.Component<Props> {
   render() {
+    if (this.props.store === undefined) { return }
     const {modal} = this.props.store
     const {name, title, subtitle, children, component: Component} = this.props
 
@@ -50,7 +51,7 @@ class Modal extends React.Component<Props> {
             {subtitle && (
               <ModalSubtitle>{subtitle}</ModalSubtitle>
             )}
-            {children || <Component />}
+            {children || (Component !== undefined ? <Component /> : '')}
           </ModalContent>
         </ModalInner>
       </ModalWrapper>

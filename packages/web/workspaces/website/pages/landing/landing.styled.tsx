@@ -1,9 +1,15 @@
+import {theme} from '@shared/theme'
 import styled from '@shared/utils/styled'
 
 export default {
   D3Wrapper: styled.div`
     height: 100vh;
     background-color: rgb(240, 244, 247);
+    line-height: 24px;
+
+    * {
+      -webkit-font-smoothing: antialiased;
+    }
 
     svg {
       cursor: default;
@@ -48,8 +54,13 @@ export default {
       stroke-width: 2.5px;
     }
 
+    circle.quick-action:hover,
+    circle.quick-action:active {
+      stroke: ${theme.fills.solid.blue.backgroundColor};
+      fill: #fff;
+    }
+
     text {
-      font: 12px sans-serif;
       pointer-events: none;
     }
 

@@ -1,10 +1,10 @@
 import * as Router from '@reach/router'
-import {Button} from '@shared/components/button'
+// import {Button} from '@shared/components/button'
 import {Input} from '@shared/components/input'
 import {InputList} from '@shared/components/input-list'
 import {Link} from '@shared/components/link'
 import {Title} from '@shared/components/title'
-import {isEmail} from '@shared/utils/is-email'
+// import {isEmail} from '@shared/utils/is-email'
 import {AuthForm, Heading} from '@website/pages/auth/styled'
 import {WithStore} from '@website/types'
 import {as} from '@website/utils/as'
@@ -46,9 +46,9 @@ class Register extends React.Component<WithStore> {
             <Input value={this.form.value('password')} {...this.form.field('password')}/>
           </InputList>
 
-          <Button mt="md" variant="primary" loading={this.isLoading.get()} disabled={!this.allowSubmit}>
+          {/* <Button mt="md" variant="primary" loading={this.isLoading.get()} disabled={!this.allowSubmit}>
             {t`Sign up`}
-          </Button>
+          </Button> */}
 
           <Link mt="xxs" to="/auth/login">{t`Sign in`}</Link>
         </AuthForm>
@@ -56,9 +56,9 @@ class Register extends React.Component<WithStore> {
     )
   }
 
-  private get allowSubmit(): boolean {
-    return isEmail(this.form.value('username')) && this.form.value('password')
-  }
+  // private get allowSubmit(): boolean {
+  //   return isEmail(this.form.value('username')) && this.form.value('password')
+  // }
 
   private handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

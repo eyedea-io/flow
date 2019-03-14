@@ -23,14 +23,13 @@ export const Icon: React.SFC<Props> = hot(module)(
 
 Icon.displayName = 'Icon'
 
-function getType(variant: FontVariant) {
+function getType(variant: FontVariant = 'regular') {
   return {
     regular: 'far',
     solid: 'fas',
     light: 'fal',
     brands: 'fab',
-  }[variant] || 'far'
-}
+  }[variant]}
 
 /**
  * @link https://fontawesome.com/how-to-use/js-component-packages

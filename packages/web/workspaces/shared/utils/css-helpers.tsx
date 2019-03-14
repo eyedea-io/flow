@@ -71,8 +71,10 @@ export function spacing (value: number) {
   }
 }
 
-export const media = (min?: number, max?: number) => (...args) => css`
-  @media screen and (min-width: ${`${min}px`}) and (max-width: ${max ? `${max}px` : '999999px'}) {
-    ${css.call(null, args)}
-  }
-`
+export const media = (min?: number, max?: number) => (...args: any) => {
+  return css`
+    @media screen and (min-width: ${`${min}px`}) and (max-width: ${max ? `${max}px` : '999999px'}) {
+      ${css.call(null, args)}
+    }
+  `
+}

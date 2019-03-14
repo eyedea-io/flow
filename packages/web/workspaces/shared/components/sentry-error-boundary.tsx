@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/core'
 import * as React from 'react'
 
 export interface State {
-  error?: Error
+  error: Error | null
 }
 
 export class SentryErrorBoundary extends React.Component<{}, State> {

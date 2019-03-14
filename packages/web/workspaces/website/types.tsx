@@ -2,7 +2,7 @@ import {NavigateFn, WindowLocation} from '@reach/router'
 import {Store} from '@website/stores'
 
 export interface WithStore {
-  store?: Store
+  store: Store
 }
 export type WithParams<TParams = {}> = Partial<TParams> & {
     path?: string

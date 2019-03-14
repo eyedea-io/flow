@@ -1,4 +1,3 @@
-import {Props as BlockProps} from '@shared/components/block'
 import {List, Props as ListProps} from '@shared/components/list'
 import {Message} from '@shared/components/message'
 import styled from '@shared/utils/styled'
@@ -8,7 +7,7 @@ import {hot} from 'react-hot-loader'
 
 type ErrorsPosition = 'each' | 'start' | 'end'
 
-export interface Props extends ListProps, BlockProps {
+export interface Props extends ListProps {
   children: React.ReactNode
   errors: object
   errorsPosition?: ErrorsPosition

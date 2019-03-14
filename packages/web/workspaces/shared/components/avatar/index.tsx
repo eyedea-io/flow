@@ -1,15 +1,16 @@
-import {Block, Props as BlockProps} from '@shared/components/block'
 import {hashStr} from '@shared/utils/hash-str'
 import styled from '@shared/utils/styled'
 import * as React from 'react'
 
-export interface Props extends BlockProps {
+export interface Props {
   id?: string,
   src?: string
   size?: number
 }
 
-const StyledAvatar = styled(Block)`
+const DEFAULT_SIZE = 32
+
+const StyledAvatar = styled.div`
   display: inline-flex;
   border: ${(props: Props) =>  props.src ? 'none' : `1px solid ${`hsl(${hashStr(props.id) % 360}, 60%, 92%)`}`};
   border-radius: 50%;
@@ -27,8 +28,8 @@ const StyledAvatarInner = styled.div`
 
   & > svg {
     fill: ${props => `hsl(${hashStr(props.id) % 360}, 60%, 82%)`};
-    width: ${props => props.size / 2.666}px;
-    height: ${props => props.size / 2.666}px;
+    width: ${props => (props.size || DEFAULT_SIZE) / 2.666}px;
+    height: ${props => (props.size || DEFAULT_SIZE) / 2.666}px;
   }
   & > img {
     max-width: 100%;
@@ -38,7 +39,7 @@ const StyledAvatarInner = styled.div`
 
 export const Avatar = (props: Props) => (
   <StyledAvatar {...props}>
-    <StyledAvatarInner {...props} size={props.size || 32}>
+    <StyledAvatarInner {...props} size={props.size || DEFAULT_SIZE}>
       {props.src ? (
         <img src={props.src} />
       ) : (

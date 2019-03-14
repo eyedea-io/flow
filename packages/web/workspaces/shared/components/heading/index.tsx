@@ -1,4 +1,2 @@
-import {lazy} from 'react'
-
-export const Heading = lazy(() => import('./heading'))
+export {default as Heading} from './heading'
 export {Props} from './heading.types'

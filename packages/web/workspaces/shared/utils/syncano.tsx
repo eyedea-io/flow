@@ -6,7 +6,7 @@ export function syncano(url: string, data?: object) {
     const s = new Syncano(SYNCANO_PROJECT_INSTANCE)
     const token = window.localStorage.getItem('token')
 
-    s.setToken(token)
+    s.setToken(token === null ? undefined  : token)
 
     return s.post(url, data, {
       params: {

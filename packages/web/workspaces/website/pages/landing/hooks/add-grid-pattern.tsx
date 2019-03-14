@@ -1,9 +1,18 @@
-import {GRID} from '../constants'
+import {GRID} from '@website/constants'
 
 export const addGridPattern = (
-  svg: d3.Selection<SVGElement, {}, null, undefined>
+  svg: d3.Selection<SVGSVGElement, {}, null, undefined>
 ) => {
+  let clientWidth = 0
+  let clientHeight = 0
+  const svgNode = svg.node()
   const content = svg.select('.content')
+
+  if (svgNode !== null) {
+    clientHeight = svgNode.clientHeight
+    clientWidth = svgNode.clientWidth
+  }
+
   const grid = content
     .append('g')
     .attr('class', 'grid')
@@ -45,8 +54,8 @@ export const addGridPattern = (
     .attr('class', 'unselect')
     .attr('x', 0)
     .attr('y', 0)
-    .attr('width', svg.node().clientWidth)
-    .attr('height', svg.node().clientHeight)
+    .attr('width', clientWidth)
+    .attr('height', clientHeight)
     .attr('fill', 'url(#grid2)')
     .attr('transform', 'translate(-1,-1)')
 }

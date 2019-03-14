@@ -7,8 +7,19 @@
       "@shared/*": ["./workspaces/shared/*"],
       "@website/*": ["./workspaces/website/*"]
     },
-    "noUnusedParameters": true,
+    "allowJs": true,
+    "allowUnreachableCode": false,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "importHelpers": true,
+    "stripInternal": true,
+    "skipLibCheck": true,
     "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
     "experimentalDecorators": true,
     "noImplicitAny": false,
     "moduleResolution": "node",
@@ -24,6 +35,9 @@
       "es2017"
     ],
     "plugins": [
+      {
+        "name": "typescript-tslint-plugin"
+      },
       {
         "name": "typescript-styled-plugin"
       }

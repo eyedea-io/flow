@@ -1,5 +1,8 @@
 {
   "extends": ["tslint-react", "tslint-eslint-rules"],
+  "linterOptions": {
+    "exclude": ["workspaces/shared/components"]
+  },
   "rules": {
     "align": [true, "statements"],
     "ban": false,

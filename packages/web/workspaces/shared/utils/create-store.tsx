@@ -3,7 +3,7 @@ import {IModelType, onSnapshot} from 'mobx-state-tree'
 
 let snapshotListener: any
 
-export const createStore = (Store: IModelType<{}, {}>) => {
+export const createStore = (Store: IModelType<any, any>) => {
   const snapshot = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '{}')
 
   // clean up snapshot listener

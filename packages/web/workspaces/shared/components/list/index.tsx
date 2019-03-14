@@ -1,4 +1,3 @@
-import {Block} from '@shared/components/block'
 import styled, {css} from '@shared/utils/styled'
 import {UI} from '@website/config'
 
@@ -10,11 +9,10 @@ export interface Props {
   spacing?: Spacing
 }
 
-export const List = styled(Block).attrs({})<Props>`
+export const List = styled.div.attrs({})<Props>`
   padding: 0;
   margin: 0;
   list-style-type: none;
-
 
   ${_ => !_.horizontal && css`& > * + * { margin-top: ${_.theme.spacing[_.spacing || 'md']} }`}
   ${_ => _.separated && css` & > * + * { padding-top: ${_.theme.spacing[_.spacing || 'md']} }`}
