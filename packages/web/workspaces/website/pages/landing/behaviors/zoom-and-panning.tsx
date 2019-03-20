@@ -57,8 +57,8 @@ export const zoomHandler = (
           d3.event.stopImmediatePropagation()
         // Panning
         } else {
-          const x = d3.event.shiftKey ? Math.sign(d3.event.wheelDelta) * GRID * 2 : 0
-          const y = d3.event.shiftKey ? 0 : Math.sign(d3.event.wheelDelta) * GRID * 2
+          const x = d3.event.shiftKey || d3.event.deltaX !== 0 ? Math.sign(d3.event.wheelDelta) * GRID * 2 : 0
+          const y = d3.event.shiftKey || d3.event.deltaY === 0 ? 0 : Math.sign(d3.event.wheelDelta) * GRID * 2
           contentTransform = contentTransform.translate(x, y)
           svg.call(zoom.transform, contentTransform)
         }
