@@ -80,6 +80,8 @@ export const renderNodes = ({drag}: Props) => {
       .attr('y', (d) => d.textY)
       .text((d) => isAlive(d) && d.data.get('title'))
   }, [
-    nodesCollection.value.map(item => item.data.get('title')),
+    nodesCollection.value.map(item => item.snapX).join(','),
+    nodesCollection.value.map(item => item.snapY).join(','),
+    nodesCollection.value.map(item => item.data.get('title')).join(','),
   ])
 }
