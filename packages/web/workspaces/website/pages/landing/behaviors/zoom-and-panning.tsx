@@ -57,8 +57,10 @@ export const zoomHandler = (
           d3.event.stopImmediatePropagation()
         // Panning
         } else {
-          const x = d3.event.shiftKey || d3.event.deltaX !== 0 ? Math.sign(d3.event.wheelDelta) * GRID * 2 : 0
-          const y = d3.event.shiftKey || d3.event.deltaY === 0 ? 0 : Math.sign(d3.event.wheelDelta) * GRID * 2
+          const isHorizontal = d3.event.shiftKey === true || d3.event.deltaX !== 0 && d3.event.deltaY === 0
+          const isVertical = d3.event.shiftKey === false && d3.event.deltaY !== 0 && d3.event.deltaX === 0
+          const x = isHorizontal ? Math.sign(d3.event.wheelDelta) * GRID * 2 : 0
+          const y = isVertical ? Math.sign(d3.event.wheelDelta) * GRID * 2 : 0
           contentTransform = contentTransform.translate(x, y)
           svg.call(zoom.transform, contentTransform)
         }
